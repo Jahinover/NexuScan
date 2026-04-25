@@ -4,6 +4,8 @@ import io
 import fitz
 import re
 
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
 # Si estás en Windows, asegúrate de que esta ruta sea correcta:
 # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
