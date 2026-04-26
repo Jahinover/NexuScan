@@ -23,31 +23,25 @@ if uploaded_file:
         progreso = st.progress(0)
         temp_list = []
         
-        # --- NUEVO: Variable para rastrear el último código detectado ---
-        ultimo_codigo_guardado = None
-        
-        for i in range(total_paginas):
+        # --- ESTRATEGIA: SOLO PÁGINAS PARES (Índices 1, 3, 5...) ---
+        # range(1, total_paginas, 2) empieza en 1 (Hoja 2) y salta de 2 en 2.
+        for i in range(1, total_paginas, 2):
             page = doc.load_page(i)
             
-            # Llamamos a la lógica del OCR que ya configuramos con Regex
-            codigo_actual = extraer_codigo_de_pagina(page)
+            # CORRECCIÓN: Enviamos i+1 como segundo argumento para el diagnóstico
+            codigo_actual = extraer_codigo_de_pagina(page, i + 1)
             
-            # --- NUEVO: Lógica para evitar duplicados consecutivos ---
-            # Solo guardamos si el código es nuevo o si es diferente al anterior
-            if codigo_actual != ultimo_codigo_guardado:
-                temp_list.append({
-                    "Página": i + 1, 
-                    "Código": codigo_actual
-                })
-                # Actualizamos cuál fue el último código que decidimos guardar
-                ultimo_codigo_guardado = codigo_actual
+            # Guardamos el código (al ser solo pares, no necesitamos lógica de duplicados)
+            temp_list.append({
+                "Página": i + 1, 
+                "Código": codigo_actual
+            })
             
-            # Actualizar barra de progreso
+            # Actualizar progreso
             progreso.progress((i + 1) / total_paginas)
             
         st.session_state.lista_codigos = temp_list
-        st.success(f"Lectura finalizada. Se detectaron {len(temp_list)} códigos únicos.")
-
+        st.success(f"Lectura finalizada. Se procesaron {len(temp_list)} remesas.")
     # --- TABLA DE VALIDACIÓN EDITABLE ---
     if st.session_state.lista_codigos:
         st.subheader("Verifica y corrige los códigos únicos")
