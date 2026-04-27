@@ -29,7 +29,8 @@ def extraer_codigo_de_pagina(page, numero_pagina):
             # OCR
             texto = pytesseract.image_to_string(img_final, config='--psm 3')
             texto_limpio = texto.upper().replace(" ", "") # Limpiamos espacios para la placa
-            
+            # --- LÓGICA POR FILAS PARA LA PLACA ---
+            lineas = texto.upper().splitlines()
             # 3. BUSCAR CÓDIGO (032...)
             if codigo == "No detectado":
                 patron_032 = re.search(r"032\d{5,7}", texto)
@@ -38,16 +39,9 @@ def extraer_codigo_de_pagina(page, numero_pagina):
                     codigo = patron_032.group(0)[1:]
 
             # 4. BUSCAR PLACA (ABC123)
-            if placa == "SIN_PLACA":
-                # Buscamos 3 letras y 3 números
-                match_placa = re.search(r"[A-Z]{3}\d{3}", texto_limpio)
-                if match_placa:
-                    placa = match_placa.group(0)
-
-            # Si ya encontró ambos, no necesita probar el otro ángulo
-            if codigo != "No detectado" and placa != "SIN_PLACA":
-                break
-
+            # 1. Obtenemos los datos detallados (coordenadas)
+            datos_ocr = pytesseract.image_to_data(img_final, output_type=pytesseract.Output.DICT)
+            
         # 5. DIAGNÓSTICO (Solo si falló el código)
         if codigo == "No detectado":
             with st.expander(f"⚠️ Diagnóstico Hoja {numero_pagina}"):
@@ -55,8 +49,8 @@ def extraer_codigo_de_pagina(page, numero_pagina):
                 st.write("Texto detectado:", texto[:200])
             
         # RETORNAMOS AMBOS DATOS
-        return {"codigo": codigo, "placa": placa}
+        return {"codigo": codigo}
             
     except Exception as e:
-        return {"codigo": f"Error: {str(e)}", "placa": "ERROR"}
+        return {"codigo": "ERROR"}
     

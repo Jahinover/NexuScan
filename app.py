@@ -35,7 +35,6 @@ if uploaded_file:
             temp_list.append({
                 "Página": i + 1, 
                 "Código": datos_ocr['codigo'],  # Accedemos a la llave código
-                "Placa": datos_ocr['placa']     # Accedemos a la llave placa
             })
             
             # Actualizar progreso
