@@ -29,12 +29,13 @@ if uploaded_file:
             page = doc.load_page(i)
             
             # CORRECCIÓN: Enviamos i+1 como segundo argumento para el diagnóstico
-            codigo_actual = extraer_codigo_de_pagina(page, i + 1)
+            datos_ocr = extraer_codigo_de_pagina(page, i + 1)
             
             # Guardamos el código (al ser solo pares, no necesitamos lógica de duplicados)
             temp_list.append({
                 "Página": i + 1, 
-                "Código": codigo_actual
+                "Código": datos_ocr['codigo'],  # Accedemos a la llave código
+                "Placa": datos_ocr['placa']     # Accedemos a la llave placa
             })
             
             # Actualizar progreso
@@ -93,4 +94,28 @@ if 'confirmado' in st.session_state and st.session_state.confirmado:
         """
         # Ejecutamos el componente
         components.html(js_code, height=0)
+    
+    st.divider()
+    st.subheader("📦 Descargar Documentos Separados")
+    st.info("Esta opción generará un archivo ZIP con las hojas individuales renombradas automáticamente.")
+
+    # Necesitamos importar la función de pdf_tools (asegúrate de tenerla en la carpeta logic)
+    from logic.pdf_tools import generar_zip_pedidos
+
+    if st.button("🎁 Preparar y Descargar Archivo .ZIP"):
+        with st.spinner("Separando páginas y comprimiendo..."):
+            # Importante: Volvemos a leer el archivo subido
+            # Le pasamos la lista de códigos que ya están corregidos por el usuario
+            uploaded_file.seek(0)
+            archivo_zip = generar_zip_pedidos(uploaded_file, st.session_state.lista_codigos)
+            
+            if archivo_zip:
+                st.download_button(
+                    label="⬇️ ¡Click aquí para Guardar el ZIP!",
+                    data=archivo_zip,
+                    file_name="ENTREGA_PROCESADA.zip",
+                    mime="application/zip"
+                )
+            else:
+                st.error("Hubo un problema al generar el archivo.")
         
