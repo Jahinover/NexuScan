@@ -4,9 +4,20 @@ import io
 import fitz
 import re
 import streamlit as st
+import shutil
 
 # Configuración de Tesseract
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# --- LÓGICA DE RUTA DINÁMICA ---
+# Buscamos si Tesseract está instalado en la ruta global (como pasa en la nube)
+tesseract_path = shutil.which("tesseract")
+
+if tesseract_path:
+    # Si lo encuentra (SERVIDOR LINUX), usa la ruta del sistema
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
+else:
+    # Si NO lo encuentra (TU PC WINDOWS), usa tu ruta local
+    # Asegúrate de que esta sea la ruta correcta en tu computadora
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 def extraer_codigo_de_pagina(page, numero_pagina):
     try:
