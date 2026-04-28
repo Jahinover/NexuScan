@@ -1,0 +1,27 @@
+# --- ENTORNOS VIRTUALES (Lo más importante) ---
+# No queremos subir la carpeta donde están instaladas las librerías
+venv/
+env/
+entornoVirtual/
+.env
+
+# --- CACHE DE PYTHON ---
+# Archivos temporales que genera Python al ejecutarse
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- ARCHIVOS TEMPORALES DEL SISTEMA ---
+# Basura que genera Windows o Mac automáticamente
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- ARCHIVOS DE SALIDA DEL PROYECTO ---
+# No queremos subir los PDFs que generes tú o los archivos ZIP
+*.pdf
+*.zip
+*.log
+
+# --- CONFIGURACIÓN DE STREAMLIT ---
+.streamlit/
