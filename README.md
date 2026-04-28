@@ -13,4 +13,4 @@
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/Jahinover/nexuscan.git](https://github.com/Jahinover/nexuscan.git)
+   git clone [https://github.com/Jahinover/NexuScan.git](https://github.com/Jahinover/NexuScan.git)
