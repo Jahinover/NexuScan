@@ -85,14 +85,21 @@ if uploaded_file:
         st.subheader("⚡ Acciones Rápidas")
         
         # BLOQUE DE URLS
+        # BLOQUE DE URLS
         with st.container():
             st.markdown("**🔗 Gestión de Enlaces**")
             mis_urls = generar_enlaces_movimiento(st.session_state.lista_codigos)
             
-            # Botón de apertura múltiple con estilo
-            if st.button(f"🚀 Abrir {len(mis_urls)} movimientos en pestañas"):
+            # 1. Usamos una clave que cambie SOLO cuando cambian los códigos
+            # Esto evita que el botón se "trabé"
+            btn_key = f"btn_abrir_{len(mis_urls)}"
+            
+            if st.button(f"🚀 Abrir {len(mis_urls)} movimientos en pestañas", key=btn_key):
+                # 2. El JS con un bypass de caché (timestamp) para que sea infinito
+                import time
                 js_code = f"""
                     <script>
+                    // Ejecución: {int(time.time())}
                     const urls = {mis_urls};
                     urls.forEach(url => {{ window.open(url, '_blank'); }});
                     </script>
@@ -103,7 +110,6 @@ if uploaded_file:
                 st.text_area("URLs", value="\n".join(mis_urls), height=150, label_visibility="collapsed")
 
         st.markdown("<br>", unsafe_allow_html=True)
-
         # BLOQUE DE DESCARGA
         with st.container():
             st.markdown("**📦 Exportación de Archivos**")
