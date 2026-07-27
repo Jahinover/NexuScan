@@ -28,7 +28,7 @@ st.markdown("""
 
 # TÍTULO E INSTRUCCIONES
 st.title("📄 NexuScan")
-st.caption("Extractor automático de códigos, generador de URLs y segmentador de PDFs")
+st.caption("Extractor automático de # de movimientos, generador de URLs y segmentador de PDFs")
 st.markdown("---")
 
 # 3. INTERFAZ DE CARGA
@@ -67,7 +67,7 @@ if uploaded_file:
 
     with col_izq:
         st.subheader("🔍 Verificación de Códigos")
-        st.info("Si el OCR falló en algún código, corrígelo aquí directamente.")
+        st.info("Si el OCR falló en algún movimiento, corrígelo aquí directamente.")
         
         # Lista editable (Sustituye a la antigua tabla de confirmación)
         for idx, item in enumerate(st.session_state.lista_codigos):

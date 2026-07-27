@@ -42,12 +42,12 @@ def extraer_codigo_de_pagina(page, numero_pagina):
             texto_limpio = texto.upper().replace(" ", "") # Limpiamos espacios para la placa
             # --- LÓGICA POR FILAS PARA LA PLACA ---
             lineas = texto.upper().splitlines()
-            # 3. BUSCAR CÓDIGO (032...)
+            # 3. BUSCAR CÓDIGO (033...)
             if codigo == "No detectado":
-                patron_032 = re.search(r"032\d{5,7}", texto)
-                if patron_032:
-                    # Quitamos el cero inicial como pediste
-                    codigo = patron_032.group(0)[1:]
+                patron_033 = re.search(r"033\d{5,7}", texto)
+                if patron_033:
+                    # Quitamos el cero inicial
+                    codigo = patron_033.group(0)[1:]
 
             # 4. BUSCAR PLACA (ABC123)
             # 1. Obtenemos los datos detallados (coordenadas)
